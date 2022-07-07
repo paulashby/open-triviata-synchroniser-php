@@ -142,10 +142,12 @@ Class API {
 		}
 	}
 
-
-	//!!! These token functions might need checking!!!
-	// Check style of function signature comments against the RateLimiter
-	// The callback set in newToken() won't be called at the moment, because we're doing the processing of api calls in a separate class - at least that's the current plan
+	/**
+     * Retrieve a session token
+     * 
+     * @param boolean $expired: Do not read from config - get new from API
+     * @return string - session cookie string
+     */
 	private function sessionToken($expired = false) {
 
 		$session_token = $this->config->get('api_token', 'tokenconfig');
