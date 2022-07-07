@@ -110,10 +110,6 @@ Class API {
 						$api_data = $api_response['results'];
 				   }
 
-				   // This also works if callback is passed as a separate argument to this function. It has to be an array array($this, methodName)
-				   // return $callback($api_data, $req_details);
-				   // THe following is better - just keeping the above while testing
-
 				   return call_user_func(array($this, $req_details['callback']), $api_data, $req_details);
 
 		    	case 1:
@@ -188,8 +184,6 @@ Class API {
      */
 	public function setToken($token, $req_details) {
 
-		echo $token;
-		var_dump($req_details);
 		if(!ctype_alnum($token)) {
 			throw new \InvalidArgumentException("Function argument 1 must be an alphanumeric string.");
 		}
