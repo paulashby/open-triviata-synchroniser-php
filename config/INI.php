@@ -20,8 +20,6 @@ Class INI {
      */
 	public function set($value, $property = false, $section = false) {
 
-		error_log("token is " . $value);
-
 		if (is_array($value)) {
 			// Add multiple properties
 			foreach ($value as $config_entry) {
