@@ -1,12 +1,23 @@
 <?php
 
+include_once realpath(__DIR__ . "/../") . "/config/INI.php";
+include_once realpath(__DIR__ . "/../") . "/config/Database.php";
+include_once realpath(__DIR__ . "/../") . "/config/API.php";
 
-include_once "../config/INI.php";
-include_once "../config/Database.php";
-include_once "../config/API.php";
-
-// Changed permissions on local ini file, but remote is fine as is
 $ini_file = realpath(__DIR__ . "/../") . "/apiconfig.ini";
+
+$new_token = true;
+
+if ($argv[1]) {
+	if($argv[1] === "-h") {
+		// Show usage info
+		die("-t Use existing token if available - API will not return questions already provided within the last 6 hours");
+
+	} else if ($argv[1] === "-t") {
+		// See usage info above
+		$new_token = false;
+	}
+}
 
 // Instantiate ini for simple interactions with scraper config file
 $config = new INI($ini_file);
