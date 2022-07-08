@@ -8,7 +8,8 @@ $ini_file = realpath(__DIR__ . "/../") . "/apiconfig.ini";
 
 $new_token = true;
 
-if ($argv[1]) {
+if ($argc > 1) {
+
 	if($argv[1] === "-h") {
 		// Show usage info
 		die("-t Use existing token if available - API will not return questions already provided within the last 6 hours");
@@ -34,7 +35,7 @@ $req_details = array(
 	'callback'=>'processQuestions',
 	'endpoint'=>'api.php',
 	'parameters'=>array(
-		'category'	=> 11,
+		'category'	=> 15,
 		'amount'	=> 50
 	)
 );
