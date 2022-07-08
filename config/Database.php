@@ -11,8 +11,6 @@ Class Database {
 	// Constructor with DB
 	public function __construct($config) {
 
-		// Parse ini file, second arg is process_sections which makes the return value a multidimensional array with section names and setting included
-		// Will need to pass $config to the open-triviata-api database like this too if we're incorporating the scraper in the same directory structure
 		$credentials = parse_ini_file($config);
 
 		$this->host = $credentials['host'];
