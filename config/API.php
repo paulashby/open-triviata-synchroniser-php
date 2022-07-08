@@ -10,7 +10,7 @@ Class API {
 
 		$this->config = $config;
 		$this->req_url = $req_url;
-		// $ch = curl_init();
+		$this->ch = curl_init();
 	}
 
 	/**
@@ -46,21 +46,20 @@ Class API {
 			$req_url .= "{$pre}token=" . $this->sessionToken();
 		}
 
-		$ch = curl_init();
 		// Configure curl		
-		curl_setopt($ch, CURLOPT_FAILONERROR, true);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_URL, $req_url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=1b01789fb2d1898c5d3358944fec0590"));
+		curl_setopt($this->ch, CURLOPT_FAILONERROR, true);
+		curl_setopt($this->ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->ch, CURLOPT_URL, $req_url);
+		curl_setopt($this->ch, CURLOPT_HTTPHEADER, array("Cookie: PHPSESSID=1b01789fb2d1898c5d3358944fec0590"));
 
 		// Make the call
-		$response = curl_exec($ch);
+		$response = curl_exec($this->ch);
 
-		if (curl_errno($ch)) {
-		    $error_mssg = curl_error($ch);
+		if (curl_errno($this->ch)) {
+		    $error_mssg = curl_error($this->ch);
 		}
-		$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-		curl_close($ch);
+		$response_code = curl_getinfo($this->ch, CURLINFO_HTTP_CODE);
+		curl_close($this->ch);
 
 		if (isset($error_mssg)) {
 		    error_log($error_mssg);
