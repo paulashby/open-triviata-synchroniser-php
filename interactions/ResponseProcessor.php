@@ -54,7 +54,7 @@ Class ResponseProcessor {
 				case 3:
 			    	// Token not found. Attempt to recover - duplicate questions will not trigger an SQL error as we're using ON DUPLICATE KEY UPDATE id=id.
 			    	// get new token to ensure api returns unique questions (going forward - they're only unique to the new token)
-					$this->token->sessionToken(true);
+		    		$this->token->sessionToken(true);
 		       		// Make the request again
 		       		return $this->api->request($req_details, True);
 
