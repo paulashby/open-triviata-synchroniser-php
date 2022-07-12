@@ -1,10 +1,10 @@
 <?php
 
-Class Triviata {
+Class Categories {
 	
 	// DB stuff
 	private $conn;
-	private $categories;
+	private $category_data;
 
 	public function __construct($db) {
 		$this->conn = $db;
