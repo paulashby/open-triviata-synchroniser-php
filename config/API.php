@@ -59,7 +59,7 @@ Class API {
 			// Append the token to ensure the api returns no duplicate questions
 			$req_url .= "{$pre}token=" . $this->token->sessionToken();
 		}
-
+		
 		$ch = curl_init();
 		$curl_options = array(
 			CURLOPT_FAILONERROR 	=> true,
@@ -73,14 +73,13 @@ Class API {
 		$response = curl_exec($ch);
 
 		if (curl_errno($ch)) {
-		    $error_mssg = curl_error($tch);
+			$error_mssg = curl_error($ch);
 		}
 		$response_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 		curl_close($ch);
 
 		if (isset($error_mssg)) {
-		    error_log($error_mssg);
-		    die($error_mssg);
+			trigger_error($error_mssg, E_USER_ERROR);
 		}
 
 		if ($response_code != 204){
