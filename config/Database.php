@@ -1,17 +1,20 @@
 <?php
 
 Class Database {
-	// DB Params
+	
 	private $host;
 	private $db_name;
 	private $username;
 	private $password;
 	private $conn;
 
-	// Constructor with DB
 	public function __construct($config) {
 
 		$credentials = parse_ini_file($config);
+
+		if (!$credentials) {
+			$error_logger->log_then_die("Unable to access database credentials.");
+		}
 
 		$this->host = $credentials['host'];
 		$this->db_name = $credentials['db_name'];
@@ -19,7 +22,6 @@ Class Database {
 		$this->password = $credentials['password'];
 	}
 
-	// DB connect
 	public function connect() {
 		$this->conn = null;
 		try {
@@ -27,9 +29,53 @@ Class Database {
 			// Set the error mode
 			$this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 		} catch(PDOException $e) {
-			echo "Connection Error " . $e->getMessage();
+			trigger_error("Connection Error " . $e->getMessage(), E_USER_ERROR);
 		}
 
 		return $this->conn;
+	}
+
+	/**
+	 * Execute the provided list of MySQL queries
+	 * @param array $db_queries - array of parameterised request arrays/SQL query strings
+	 * @param array $options - has member 'insert' when running INSERT query,  'questions' when inserting questions
+	 *
+	 * @return ID of added row if questions parameter is true, else result of MySQL Query
+	 */
+	public function query($queries, $options = array()) {
+
+		try {
+			$this->conn = $this->connect();
+
+			foreach ($queries as $db_query) {
+
+				$use_prepared = is_array($db_query);
+
+				if ($use_prepared) {
+					$stmt = $this->conn->prepare($db_query['query']);
+					$stmt->execute($db_query['values']);
+				} else {
+					$stmt = $this->conn->prepare($db_query);
+					$stmt->execute();
+				}
+
+				if (in_array('insert', $options)) {
+					if (in_array('questions', $options)) {				
+						return $this->conn->lastInsertId('id');
+					}
+					$query_results = $stmt;
+				} else {
+					$query_results = $stmt->fetchAll();
+				}
+			}
+
+			if (is_countable($query_results) && count($query_results)) {
+				return $query_results;
+			}
+			return array(0);
+		}
+		catch (Exception $error) {
+			trigger_error($error->getMessage(), E_USER_ERROR);
+		}
 	}
 }
