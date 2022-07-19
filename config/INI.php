@@ -9,6 +9,10 @@ Class INI {
 
 		$this->file = $file;
 		$this->ini_data = parse_ini_file($file, true);
+
+		if (!$this->ini_data) {
+			trigger_error("Unable to read ini file.", E_USER_ERROR);
+		}
 	}
 
 	/**
@@ -49,15 +53,14 @@ Class INI {
 				// Update reference
 				$property_parent = $this->ini_data[$section];
 			} else {
-				error_log("$section section could not be found in ini file");
-				return false;
+				trigger_error("$section section could not be found in ini file.", E_USER_ERROR);
 			}
 		}
 		if (array_key_exists($property, $property_parent)) {
 			return $property_parent[$property];
 		}
-		error_log("$property property could not be found in ini file");
-		return false;
+		trigger_error("$property property could not be found in ini file.", E_USER_ERROR);
+
 	}
 
 	/**
@@ -69,61 +72,61 @@ Class INI {
 	public function save() {
 
         // process $ini_data array
-        $data = array();
-        foreach ($this->ini_data as $key => $val) {
-            if (is_array($val)) {
-                $data[] = "[$key]";
-                foreach ($val as $skey => $sval) {
-                    if (is_array($sval)) {
-                        foreach ($sval as $_skey => $_sval) {
-                            if (is_numeric($_skey)) {
-                                $data[] = $skey.'[] = '.(is_numeric($_sval) ? $_sval : (ctype_upper($_sval) ? $_sval : '"'.$_sval.'"'));
-                            } else {
-                                $data[] = $skey.'['.$_skey.'] = '.(is_numeric($_sval) ? $_sval : (ctype_upper($_sval) ? $_sval : '"'.$_sval.'"'));
-                            }
-                        }
-                    } else {
-                        $data[] = $skey.' = '.(is_numeric($sval) ? $sval : (ctype_upper($sval) ? $sval : '"'.$sval.'"'));
-                    }
-                }
-            } else {
-                $data[] = $key.' = '.(is_numeric($val) ? $val : (ctype_upper($val) ? $val : '"'.$val.'"'));
-            }
+		$data = array();
+		foreach ($this->ini_data as $key => $val) {
+			if (is_array($val)) {
+				$data[] = "[$key]";
+				foreach ($val as $skey => $sval) {
+					if (is_array($sval)) {
+						foreach ($sval as $_skey => $_sval) {
+							if (is_numeric($_skey)) {
+								$data[] = $skey.'[] = '.(is_numeric($_sval) ? $_sval : (ctype_upper($_sval) ? $_sval : '"'.$_sval.'"'));
+							} else {
+								$data[] = $skey.'['.$_skey.'] = '.(is_numeric($_sval) ? $_sval : (ctype_upper($_sval) ? $_sval : '"'.$_sval.'"'));
+							}
+						}
+					} else {
+						$data[] = $skey.' = '.(is_numeric($sval) ? $sval : (ctype_upper($sval) ? $sval : '"'.$sval.'"'));
+					}
+				}
+			} else {
+				$data[] = $key.' = '.(is_numeric($val) ? $val : (ctype_upper($val) ? $val : '"'.$val.'"'));
+			}
             // empty line
-            $data[] = null;
-        }
+			$data[] = null;
+		}
 
         // open file pointer, init flock options
-        $fp = fopen($this->file, 'w');
-        $retries = 0;
-        $max_retries = 100;
+		$fp = fopen($this->file, 'w');
+		$retries = 0;
+		$max_retries = 100;
 
-        if (!$fp) {
-            return false;
-        }
+		if (!$fp) {
+			return false;
+		}
 
         // loop until get lock, or reach max retries
-        do {
-            if ($retries > 0) {
-                usleep(rand(1, 5000));
-            }
-            $retries += 1;
-        } while (!flock($fp, LOCK_EX) && $retries <= $max_retries);
+		do {
+			if ($retries > 0) {
+				usleep(rand(1, 5000));
+			}
+			$retries += 1;
+		} while (!flock($fp, LOCK_EX) && $retries <= $max_retries);
 
         // couldn't get the lock
-        if ($retries == $max_retries) {
-            return false;
-        }
+		if ($retries == $max_retries) {
+			return false;
+		}
 
         // got lock, write data
-        fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
+		fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
 
         // release lock
-        flock($fp, LOCK_UN);
-        fclose($fp);
+		flock($fp, LOCK_UN);
+		fclose($fp);
 
-        return true;
-    }
+		return true;
+	}
 
 	/**
      * Update or add a property
