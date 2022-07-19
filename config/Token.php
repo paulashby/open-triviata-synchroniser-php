@@ -37,17 +37,16 @@ Class Token {
 	/**
      * Request new token
      * 
-     * @param string $token
      * @return string - session cookie string
      */
 	private function newToken() {
 
 		$req_details = array(
-		    'callback'	 => array($this, 'setToken'),
-		    'endpoint' 	 => 'api_token.php',
-		    'parameters' => array(
-		    	'command' 	 => 'request'
-		    )
+			'callback'	 => array($this, 'setToken'),
+			'endpoint' 	 => 'api_token.php',
+			'parameters' => array(
+				'command' 	 => 'request'
+			)
 		);
 		return $this->api->request($req_details, False);
 	}
@@ -62,7 +61,7 @@ Class Token {
 	public function setToken($token, $req_details) {
 
 		if(!ctype_alnum($token)) {
-			throw new \InvalidArgumentException("Function argument 1 must be an alphanumeric string.");
+			trigger_error("Function argument 1 must be an alphanumeric string.", E_USER_ERROR);
 		}
 		$this->config->set($token, 'api_token', 'tokenconfig');
 		return $token;
