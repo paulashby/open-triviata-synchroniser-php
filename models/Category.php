@@ -23,42 +23,41 @@ Class Category {
 		$this->status['next'] = $api_question_breakdown['category'];
 	}
 	
-     /**
-	 * Get id
-	 *
-	 * @return int $id
-	 */
+    /**
+     * Get id
+     *
+     * @return int $id
+     */
      public function id() {
      	return $this->id;
      }
      
-     /**
-	 * Get category status
-	 *
-	 * @return Status array
-	 */
+    /**
+     * Get category status
+     *
+     * @return Status array
+     */
      public function status() {
      	return $this->status;
      }
      
-     /**
-	 * Synchronise category with Api (make sure we've got all the questions)
-	 *
-	 * @return int $id
-	 */
+    /**
+     * Synchronise category with Api (make sure we've got all the questions)
+     *
+     * @return int $id
+     */
      public function synchronise() {
      	
-    	// This is currently being called by the scaper while loop with no terminal condition
      	$this->questions = new Questions($this->id, $this, $this->connector);
      	$this->process($this->questions->unsynced());
      	return $this->id;
      }
      
-     /**
-	 * Synchronise category with Api (make sure we've got all the questions)
-	 *
-	 * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
-	 */
+    /**
+     * Synchronise category with Api (make sure we've got all the questions)
+     *
+     * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
+     */
      private function process($unsynced) {
 
      	error_log("Updating category " . $this->id);
@@ -87,10 +86,10 @@ Class Category {
      }
 
     /**
-	 * Get the number of questions already added to the local database for this category
-	 *
-	 * @return associative array of question counts for this category
-	 */
+     * Get the number of questions already added to the local database for this category
+     *
+     * @return associative array of question counts for this category
+     */
     private function initDatabase_question_count() {
 
     	$db_query = array(
