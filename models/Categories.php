@@ -130,7 +130,7 @@ Class Categories {
 	 * @param api_data: Data returned by API
 	 * @return associative array of category numbers and names
 	 */
-	private function extractTriviaCategories($api_data) {
+	public function extractTriviaCategories($api_data) {
 
 		return $api_data['trivia_categories'];	
 	}
