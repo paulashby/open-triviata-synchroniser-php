@@ -96,7 +96,7 @@ Class Categories {
 		$latest_categories = $this->connector->api->request($req_details, false);
 
 		foreach ($latest_categories as $category) {
-	    	// Populate api_categories with category number/name pairs
+			// Populate api_categories with category number/name pairs
 			$this->api_categories[$category['id']] = $category['name'];
 		}
 		$minimum_category_number = array_key_first($this->api_categories);

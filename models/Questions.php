@@ -23,10 +23,10 @@ Class Questions {
 	}
 
     /**
-	 * Add questions to local database - restrict to difficulty level if provided
-	 *
-	 * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
-	 */
+     * Add questions to local database - restrict to difficulty level if provided
+     *
+     * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
+     */
     public function syncLevel($unsynced) {
 
     	$max_questions = self::MAX_QUESTIONS;

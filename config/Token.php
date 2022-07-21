@@ -35,10 +35,10 @@ Class Token {
 	}
 
 	/**
-     * Request new token
-     * 
-     * @return string - session cookie string
-     */
+	 * Request new token
+	 * 
+	 * @return string - session cookie string
+	 */
 	private function newToken() {
 
 		$req_details = array(

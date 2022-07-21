@@ -71,7 +71,7 @@ Class INI {
 	 */
 	public function save() {
 
-        // process $ini_data array
+		// process $ini_data array
 		$data = array();
 		foreach ($this->ini_data as $key => $val) {
 			if (is_array($val)) {
@@ -92,11 +92,11 @@ Class INI {
 			} else {
 				$data[] = $key.' = '.(is_numeric($val) ? $val : (ctype_upper($val) ? $val : '"'.$val.'"'));
 			}
-            // empty line
+			// empty line
 			$data[] = null;
 		}
 
-        // open file pointer, init flock options
+		// open file pointer, init flock options
 		$fp = fopen($this->file, 'w');
 		$retries = 0;
 		$max_retries = 100;
@@ -105,7 +105,7 @@ Class INI {
 			return false;
 		}
 
-        // loop until get lock, or reach max retries
+		// loop until get lock, or reach max retries
 		do {
 			if ($retries > 0) {
 				usleep(rand(1, 5000));
@@ -113,15 +113,15 @@ Class INI {
 			$retries += 1;
 		} while (!flock($fp, LOCK_EX) && $retries <= $max_retries);
 
-        // couldn't get the lock
+		// couldn't get the lock
 		if ($retries == $max_retries) {
 			return false;
 		}
 
-        // got lock, write data
+		// got lock, write data
 		fwrite($fp, implode(PHP_EOL, $data).PHP_EOL);
 
-        // release lock
+		// release lock
 		flock($fp, LOCK_UN);
 		fclose($fp);
 
