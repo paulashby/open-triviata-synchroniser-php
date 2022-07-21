@@ -135,7 +135,7 @@ Class Questions {
     							)
     						);
     					}
-	            		// Add correct answer
+    					// Add correct answer
     					$db_queries_answers[] = array(
     						'query' => "INSERT INTO answers (question_id, answer, correct) VALUES (?, ?, 1)", 
     						'values' => array(
