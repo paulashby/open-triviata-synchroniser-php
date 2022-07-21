@@ -22,45 +22,45 @@ Class Questions {
 		return $this->unsynced;
 	}
 
-     /**
+    /**
 	 * Add questions to local database - restrict to difficulty level if provided
 	 *
 	 * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
 	 */
-     public function syncLevel($unsynced) {
+    public function syncLevel($unsynced) {
 
-     	$max_questions = self::MAX_QUESTIONS;
+    	$max_questions = self::MAX_QUESTIONS;
 
-     	$req_details = array(
-     		'callback' 		=> array($this, 'processQuestions'),
-     		'endpoint' 		=> 'api.php',
-     		'parameters' 	=> array(
-     			'category' 	=> $this->category_id,
-     			'amount' 	=> $max_questions
-     		)
-     	);
+    	$req_details = array(
+    		'callback' 		=> array($this, 'processQuestions'),
+    		'endpoint' 		=> 'api.php',
+    		'parameters' 	=> array(
+    			'category' 	=> $this->category_id,
+    			'amount' 	=> $max_questions
+    		)
+    	);
 
-     	$difficulty_level = $unsynced['level'];
+    	$difficulty_level = $unsynced['level'];
 
-     	if ($difficulty_level !== "all") {
-     		$req_details['parameters']['difficulty'] = $difficulty_level;	
-     	}
+    	if ($difficulty_level !== "all") {
+    		$req_details['parameters']['difficulty'] = $difficulty_level;	
+    	}
 
-     	$total = $unsynced['count'];
+    	$total = $unsynced['count'];
 
-     	for ($i=$max_questions; $i <= $total; $i+=$max_questions) { 
-     		$this->connector->api->request($req_details);
-     	}
+    	for ($i=$max_questions; $i <= $total; $i+=$max_questions) { 
+    		$this->connector->api->request($req_details);
+    	}
 
-     	$remaining = $total % $max_questions;
+    	$remaining = $total % $max_questions;
 
-     	if ($remaining) {
-    		// Add any stragglers
-     		$req_details['parameters']['amount'] = $remaining;
-     		$this->connector->api->request($req_details);
-     	}
+    	if ($remaining) {
+   		// Add any stragglers
+    		$req_details['parameters']['amount'] = $remaining;
+    		$this->connector->api->request($req_details);
+    	}
 
-     }
+    }
 
     /**
      * Add the given questions to the local database
@@ -162,7 +162,7 @@ Class Questions {
     	}
     }
 
-	// Initalise array with question difficulty levels to sync
+    // Initalise array with question difficulty levels to sync
     private function initUnsyncedList() {
 
 		// Get number of questions already processed for each difficulty level

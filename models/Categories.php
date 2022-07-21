@@ -48,11 +48,11 @@ Class Categories {
 	}
 
     /**
-	 * Add a new category to the local database if given category does not exist
-	 *
-	 * @param int $category_id - the id number for the new category
-	 * @return false or the id number for the new category
-	 */
+     * Add a new category to the local database if given category does not exist
+     *
+     * @param int $category_id - the id number for the new category
+     * @return false or the id number for the new category
+     */
     private function getCategory($category_id) {
 
     	if (!array_key_exists($category_id, $this->api_categories)) {

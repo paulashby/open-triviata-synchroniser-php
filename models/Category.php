@@ -28,62 +28,62 @@ Class Category {
      *
      * @return int $id
      */
-     public function id() {
-     	return $this->id;
-     }
-     
+    public function id() {
+    	return $this->id;
+    }
+    
     /**
      * Get category status
      *
      * @return Status array
      */
-     public function status() {
-     	return $this->status;
-     }
-     
+    public function status() {
+    	return $this->status;
+    }
+    
     /**
      * Synchronise category with Api (make sure we've got all the questions)
      *
      * @return int $id
      */
-     public function synchronise() {
-     	
-     	$this->questions = new Questions($this->id, $this, $this->connector);
-     	$this->process($this->questions->unsynced());
-     	return $this->id;
-     }
-     
+    public function synchronise() {
+    	
+    	$this->questions = new Questions($this->id, $this, $this->connector);
+    	$this->process($this->questions->unsynced());
+    	return $this->id;
+    }
+    
     /**
      * Synchronise category with Api (make sure we've got all the questions)
      *
      * @param array $unsynced - contains total question count and levels array eg ['easy': 100, ...]
      */
-     private function process($unsynced) {
+    private function process($unsynced) {
 
-     	error_log("Updating category " . $this->id);
+    	error_log("Updating category " . $this->id);
 
-     	$unsynced_levels = $unsynced['levels'];
+    	$unsynced_levels = $unsynced['levels'];
 
-     	if (!$unsynced_levels) {
+    	if (!$unsynced_levels) {
     		// No details for individual difficulty levels - we need to sync all
-     		$all = array(
-     			'level' => "all",
-     			'count' => $unsynced['total']
-     		);    		
+    		$all = array(
+    			'level' => "all",
+    			'count' => $unsynced['total']
+    		);    		
     		// Add all questions for given category to database
-     		$this->questions->syncLevel($all);
-     	} else {
+    		$this->questions->syncLevel($all);
+    	} else {
 
     		// Sync just the provided unsynced difficulty levels
-     		foreach ($unsynced_levels as $level => $count) {
-     			$levels = array(
-     				'level' => $level,
-     				'count' => $count
-     			);    			
-     			$this->questions->syncLevel($levels);
-     		}
-     	}
-     }
+    		foreach ($unsynced_levels as $level => $count) {
+    			$levels = array(
+    				'level' => $level,
+    				'count' => $count
+    			);    			
+    			$this->questions->syncLevel($levels);
+    		}
+    	}
+    }
 
     /**
      * Get the number of questions already added to the local database for this category

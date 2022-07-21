@@ -16,12 +16,12 @@ Class INI {
 	}
 
 	/**
-     * Set a property to the given value
-     * 
-     * @param string/array $value: array if multiple items submitted, else string
-     * @param string $property: name of property to set
-     * @param string $section: name of section the property belongs in (optional)
-     */
+	 * Set a property to the given value
+	 * 
+	 * @param string/array $value: array if multiple items submitted, else string
+	 * @param string $property: name of property to set
+	 * @param string $section: name of section the property belongs in (optional)
+	 */
 	public function set($value, $property = false, $section = false) {
 
 		if (is_array($value)) {
@@ -37,11 +37,11 @@ Class INI {
 	}
 
 	/**
-     * Get property
-     * 
-     * @param string $property: name of property to get
-     * @param string $section: name of section the property belongs in (optional)
-     */
+	 * Get property
+	 * 
+	 * @param string $property: name of property to get
+	 * @param string $section: name of section the property belongs in (optional)
+	 */
 	public function get($property, $section = false) {
 
 		// Reference to whichever array the property is in
@@ -64,11 +64,11 @@ Class INI {
 	}
 
 	/**
-     * Write ini file
-     * This function is lifted directly from Lawrence Cherone's answer of Jan 14, 2018, here https://stackoverflow.com/questions/5695145/how-to-read-and-write-to-an-ini-file-with-php
-     * 
-     * @return bool
-     */
+	 * Write ini file
+	 * This function is lifted directly from Lawrence Cherone's answer of Jan 14, 2018, here https://stackoverflow.com/questions/5695145/how-to-read-and-write-to-an-ini-file-with-php
+	 * 
+	 * @return bool
+	 */
 	public function save() {
 
         // process $ini_data array
@@ -129,12 +129,12 @@ Class INI {
 	}
 
 	/**
-     * Update or add a property
-     * 
-     * @param string $value: value of the property
-     * @param string $property: name of the property
-     * @param @param string $section: name of section the property belongs in (optional)
-     */
+	 * Update or add a property
+	 * 
+	 * @param string $value: value of the property
+	 * @param string $property: name of the property
+	 * @param @param string $section: name of section the property belongs in (optional)
+	 */
 	private function setProperty($value, $property, $section = false) {
 
 		if ($section){

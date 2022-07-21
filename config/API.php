@@ -25,12 +25,12 @@ Class API {
 	}	
 
 	/**
-     * Make API call
-     * 
-     * @param string $req_details
-     * @param boolean $use_token
-     * @return Processed data
-     */
+	 * Make API call
+	 * 
+	 * @param string $req_details
+	 * @param boolean $use_token
+	 * @return Processed data
+	 */
 	public function request($req_details, $use_token = true) {
 
 		// Concatonate with empty string so we don't replace our base url

@@ -12,13 +12,13 @@ Class ResponseProcessor {
 	}
 
 	/**
-     * React to API response codes
-     * 
-     * @param array $req_details: the url fragments
-     * @param array api_response: Data returned by api
-     * @param string req_url: the assembled url that was used for the api call
-     * @return Processed data or false
-     */
+	 * React to API response codes
+	 * 
+	 * @param array $req_details: the url fragments
+	 * @param array api_response: Data returned by api
+	 * @param string req_url: the assembled url that was used for the api call
+	 * @return Processed data or false
+	 */
 	public function process($req_details, $api_response, $req_url) {
 
 		try {

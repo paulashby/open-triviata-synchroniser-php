@@ -18,11 +18,11 @@ Class Token {
 	}	
 
 	/**
-     * Retrieve a session token
-     * 
-     * @param boolean $expired: Do not read from config - get new from API
-     * @return string - session cookie string
-     */
+	 * Retrieve a session token
+	 * 
+	 * @param boolean $expired: Do not read from config - get new from API
+	 * @return string - session cookie string
+	 */
 	public function sessionToken($expired = false) {
 
 		$session_token = $this->config->get('api_token', 'tokenconfig');
@@ -52,12 +52,12 @@ Class Token {
 	}
 
 	/**
-     * Store new session token in config file
-     * 
-     * @param string $token
-     * @param array $req_details
-     * @return string - session cookie string
-     */
+	 * Store new session token in config file
+	 * 
+	 * @param string $token
+	 * @param array $req_details
+	 * @return string - session cookie string
+	 */
 	public function setToken($token, $req_details) {
 
 		if(!ctype_alnum($token)) {
