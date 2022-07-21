@@ -165,7 +165,7 @@ Class Questions {
     // Initalise array with question difficulty levels to sync
     private function initUnsyncedList() {
 
-		// Get number of questions already processed for each difficulty level
+    	// Get number of questions already processed for each difficulty level
     	$synced = $this->levelCounts($this->category_id);
 
     	$this->unsynced = array(
