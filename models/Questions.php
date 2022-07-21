@@ -174,11 +174,11 @@ Class Questions {
     	);
 
     	foreach ($synced as $level => $done) {
-			// Check for unsynced difficulty levels
+    		// Check for unsynced difficulty levels
     		$available_questions = $this->category_status['next']["total_{$level}_question_count"];
 
     		if ($done < $available_questions) {
-				// There are more questions to process for this level - place in $unsynced array
+    			// There are more questions to process for this level - place in $unsynced array
     			$this->unsynced['levels'][$level] = $available_questions;
     		}
     	}
