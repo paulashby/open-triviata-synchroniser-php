@@ -94,7 +94,7 @@ Class Category {
 
     	$db_query = array(
     		array(
-    			'query' => "SELECT COUNT(id) AS question_count FROM questions WHERE category_id = ?", 
+    			'query' => "SELECT COUNT(id) AS question_count FROM questions WHERE category = ?", 
     			'values' => array(
     				$this->id
     			)

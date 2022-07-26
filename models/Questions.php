@@ -102,7 +102,7 @@ Class Questions {
 	    		// Prepare requests for all questions
     			$db_queries_questions = array(
     				array(
-    					'query' => "INSERT INTO questions (category_id, type, difficulty, question_text) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=id;", 
+    					'query' => "INSERT INTO questions (category, type, difficulty, question_text) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=id;", 
     					'values' => array(
     						$category_id, 
     						$question_details['type'], 
@@ -201,7 +201,7 @@ Class Questions {
 		foreach ($counts as $level => $count) {
 			$db_query = array(
 				array(
-					'query' => "SELECT COUNT(*) FROM questions WHERE category_id = ? AND difficulty = ?", 
+					'query' => "SELECT COUNT(*) FROM questions WHERE category = ? AND difficulty = ?", 
 					'values' => array(
 						$this->category_id, 
 						$level
