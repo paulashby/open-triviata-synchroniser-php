@@ -4,15 +4,15 @@ Class API {
 
 	private $config;
 	private $req_url;
-	private $response_processor;
+	// private $response_processor;
 	private $token;
 
-	public function __construct($config, $req_url, $response_processor, $token) {
+	public function __construct($config, $req_url, $token) {
 
 		$this->config = $config;
 		$this->req_url = $req_url;
 		$this->token = $token;
-		$this->response_processor = $response_processor;
+		// $this->response_processor = $response_processor;
 	}
 
 	public function initialise() {
@@ -21,7 +21,7 @@ Class API {
 		$this->token->initialise($this->config, $this);
 
 		// $response_processor needs $token and $api for api calls
-		$this->response_processor->initialise($this->token, $this);	
+		// $this->response_processor->initialise($this->token, $this);	
 	}	
 
 	/**
@@ -84,7 +84,16 @@ Class API {
 
 		if ($response_code != 204){
 			// Return data which the calling function should process
-			return $this->response_processor->process($req_details, json_decode($response, true), $req_url);			
+			$query_details = array(
+				'req_details'	=> $req_details,
+				'api_response'	=> json_decode($response, true),
+				'req_url'		=> $req_url,
+				'token'			=> $this->token,
+				'api'			=> $this
+
+			);
+			return ResponseProcessor::process($query_details);
+			// return $this->response_processor->process($req_details, json_decode($response, true), $req_url);			
 		}
 	}
 }

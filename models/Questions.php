@@ -65,19 +65,18 @@ Class Questions {
     /**
      * Add the given questions to the local database
      * 
-     * Could these question arrays be question objects - anything to gain from this?
      * @param array $questions: An array of associative question arrays, each containing the details of a single question
      * @param array $req_details: An associative array of url segment strings used for the api request
      */
     public function processQuestions($questions, $req_details) {
 
-    	$category_id = $req_details[ 'parameters']['category'];
+    	$category_id = DataCleaner::clean($req_details['parameters']['category'], 'integer');
 
     	if (count($questions)) {    	
 
-    		$category_name = $questions[0]['category'];
+    		$category_name = DataCleaner::clean($questions[0]['category'], 'categoryName');
 
-        	// Make sure category exists
+        	// Add category if not already created
     		$db_query = array(
     			array(
     				'query' => "INSERT INTO categories (id, category) VALUES (?, ?) ON DUPLICATE KEY UPDATE id=id", 
@@ -105,9 +104,9 @@ Class Questions {
     					'query' => "INSERT INTO questions (category, type, difficulty, question_text) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=id;", 
     					'values' => array(
     						$category_id, 
-    						$question_details['type'], 
-    						$question_details['difficulty'], 
-    						$question_details['question']
+    						DataCleaner::clean($question_details['type'], 'parameter', 'type'), 
+    						DataCleaner::clean($question_details['difficulty'], 'parameter', 'difficulty'),
+    						DataCleaner::clean($question_details['question'], 'string')
     					)
     				)
     			);
@@ -127,6 +126,7 @@ Class Questions {
     					);
     				} else {
     					foreach ($question_details['incorrect_answers'] as $incorrect_answer) {
+    						$incorrect_answer = DataCleaner::clean($incorrect_answer, gettype($incorrect_answer));
     						$db_queries_answers[] = array(
     							'query' => "INSERT INTO answers (question_id, answer, correct) VALUES (?, ?, 0)", 
     							'values' => array(
@@ -136,11 +136,12 @@ Class Questions {
     						);
     					}
     					// Add correct answer
-    					$db_queries_answers[] = array(
+    					$correct_answer = DataCleaner::clean($question_details['correct_answer'], 'string');
+    					$db_queries_answers[] = array(    						
     						'query' => "INSERT INTO answers (question_id, answer, correct) VALUES (?, ?, 1)", 
     						'values' => array(
     							$last_insert_id + 0, 
-    							$question_details['correct_answer']
+    							$correct_answer
     						)
     					);
     				}

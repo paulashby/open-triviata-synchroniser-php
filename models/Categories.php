@@ -31,7 +31,7 @@ Class Categories {
 			return false;
 		}
 		if (array_key_exists($category_id, $this->api_categories)) {
-			// Category_id exists with this id
+			// Category exists with this id
 			$category = new Category($category_id, $this->questionBreakdown($category_id), $this->connector);
 
 			$category_status = $category->status();
@@ -89,14 +89,19 @@ Class Categories {
 	private function initApiCategories() {
 
 		$req_details = array(
-			'callback'	=> array($this, 'extractTriviaCategories'),
+			'callback'	=> function ($api_data) {
+				return $api_data['trivia_categories'];
+			},
 			'endpoint'	=> 'api_category.php'
 		);
 
 		$latest_categories = $this->connector->api->request($req_details, false);
 
-		foreach ($latest_categories as $category) {
+		foreach ($latest_categories as $category) {			
 			// Populate api_categories with category number/name pairs
+			$category_name = DataCleaner::clean($category['name'], 'categoryName');
+			$category_id = DataCleaner::clean($category['id'], 'integer');
+
 			$this->api_categories[$category['id']] = $category['name'];
 		}
 		$minimum_category_number = array_key_first($this->api_categories);
@@ -112,8 +117,8 @@ Class Categories {
 	 */
 	private function initDatabaseCategories() {
 
-		$categories_in_db_query = array("SELECT id FROM categories ORDER BY id ASC");
-		$database_categories = $this->connector->database->query($categories_in_db_query);
+		$query = array("SELECT id FROM categories ORDER BY id ASC");
+		$database_categories = $this->connector->database->query($query);
 		$this->database_categories = array();
 
 		foreach ($database_categories as $category_data) {
@@ -125,22 +130,6 @@ Class Categories {
 	}
 
 	/**
-	 * Callback to extract trivia categories from data returned by API
-	 *
-	 * @param api_data: Data returned by API
-	 * @return associative array of category numbers and names
-	 */
-	public function extractTriviaCategories($api_data) {
-
-		return $api_data['trivia_categories'];	
-	}
-
-	// TODO: This literally just returns the data it received, but need it to keep ResponseProcessor simple - is there a better way?
-	public function returnApiData($api_data) {
-		return $api_data;
-	}
-
-	/**
 	 * Filter api_data to include only verified question counts
 	 *
 	 * @param api_data: Data returned by API
@@ -149,11 +138,11 @@ Class Categories {
 	public function extractCounts($api_data) {
 
 		$extracted_counts = array(
-			'overall' => $api_data['overall']['total_num_of_verified_questions']
+			'overall' => DataCleaner::clean($api_data['overall']['total_num_of_verified_questions'], 'integer')
 		);
 
 		foreach ($api_data['categories'] as $cat_key => $cat_data) {
-			$extracted_counts[(int) $cat_key] = $cat_data['total_num_of_verified_questions'];
+			$extracted_counts[DataCleaner::clean($cat_key, 'integer')] = DataCleaner::clean($cat_data['total_num_of_verified_questions'], 'integer');
 		}
 
 		return $extracted_counts;
@@ -181,8 +170,7 @@ Class Categories {
 			return $questions;
 		}
 
-		$req_details = array(			
-			'callback' => array($this, 'returnApiData'),
+		$req_details = array(
 			'endpoint' => 'api_count.php',
 			'parameters' => array(
 				'category' => $category_id
@@ -191,8 +179,10 @@ Class Categories {
 
 		// Return a single associative array with category number and question counts for each difficulty level
 		$breakdown = $this->connector->api->request($req_details, false);
-		$breakdown['category_question_count']['id'] = $breakdown['category_id'];
-		$questions['category'] = $breakdown['category_question_count'];
+		$category_id = DataCleaner::clean($breakdown['category_id'], 'integer');
+		$category_question_count = DataCleaner::clean($breakdown['category_question_count'], 'difficultyLevelArray');
+		$category_question_count['id'] = $category_id;
+		$questions['category'] = $category_question_count;
 
 		return $questions;
 	}
