@@ -15,7 +15,7 @@ Class DataCleaner {
 	);
 
 	public static function clean($data, $method, $more = false) {
-		// permitted_vals is constant to check values against (TYPE etc)
+		// If provided, $more is additional arg for $method
 		return $more ? self::$method($data, $more) : self::$method($data);	
 	}
 
