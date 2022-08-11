@@ -14,7 +14,7 @@ Class Connector {
 
 		$ini_file = realpath(__DIR__ . "/../") . "/apiconfig.ini";
 
-		// Instantiate ini for interactions with scraper config file
+		// Instantiate ini for interactions with synchroniser config file
 		$config = new INI($ini_file);
 		$token = new Token();
 
