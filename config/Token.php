@@ -29,7 +29,6 @@ Class Token {
 		$session_token = $this->config->get('api_token', 'tokenconfig');
 
 		if($new_token || (! $session_token) || ! strlen($session_token)) {
-			error_log("getting new token");
 			$session_token = $this->newToken();
 		}
 
