@@ -1,5 +1,7 @@
 <?php
 
+include_once realpath(__DIR__ ) . "/Questions.php";
+
 Class Category {
 	
 	private $connector;

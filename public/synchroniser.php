@@ -5,7 +5,6 @@ include_once realpath(__DIR__ . "/../") . "/utilities/ErrorLogger.php";
 include_once realpath(__DIR__ . "/../") . "/utilities/DataCleaner.php";
 include_once realpath(__DIR__ . "/../") . "/interactions/ResponseProcessor.php";
 include_once realpath(__DIR__ . "/../") . "/models/Categories.php";
-include_once realpath(__DIR__ . "/../") . "/models/Questions.php";
 
 $new_token = true;
 
