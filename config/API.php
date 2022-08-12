@@ -4,7 +4,6 @@ Class API {
 
 	private $config;
 	private $req_url;
-	// private $response_processor;
 	private $token;
 
 	public function __construct($config, $req_url, $token) {
@@ -12,16 +11,12 @@ Class API {
 		$this->config = $config;
 		$this->req_url = $req_url;
 		$this->token = $token;
-		// $this->response_processor = $response_processor;
 	}
 
 	public function initialise() {
 
 		// $token needs $config and API to make api calls and update ini file
-		$this->token->initialise($this->config, $this);
-
-		// $response_processor needs $token and $api for api calls
-		// $this->response_processor->initialise($this->token, $this);	
+		$this->token->initialise($this->config, $this);	
 	}	
 
 	/**
@@ -92,8 +87,7 @@ Class API {
 				'api'			=> $this
 
 			);
-			return ResponseProcessor::process($query_details);
-			// return $this->response_processor->process($req_details, json_decode($response, true), $req_url);			
+			return ResponseProcessor::process($query_details);		
 		}
 	}
 }
