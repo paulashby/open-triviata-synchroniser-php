@@ -5,7 +5,7 @@ Class Token {
 	private $config;
 	private $api;
 
-	public function initialise($config, $api) {
+	public function __construct($config, $api, $new_token) {
 
 		// $config allows us to update ini file
 		$this->config = $config;
@@ -14,20 +14,22 @@ Class Token {
 		$this->api = $api;
 
 		// Update session token
-		$this->sessionToken();
-	}	
+		self::sessionToken($new_token);
+
+	}
 
 	/**
 	 * Retrieve a session token
 	 * 
-	 * @param boolean $get_new: Do not read from config - get new from API
+	 * @param boolean $new_token: Do not read from config - get new from API
 	 * @return string - session cookie string
 	 */
-	public function sessionToken($get_new = false) {
+	public function sessionToken($new_token = false) {
 
 		$session_token = $this->config->get('api_token', 'tokenconfig');
 
-		if($get_new || (! $session_token) || ! strlen($session_token)) {
+		if($new_token || (! $session_token) || ! strlen($session_token)) {
+			error_log("getting new token");
 			$session_token = $this->newToken();
 		}
 

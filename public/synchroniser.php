@@ -24,7 +24,7 @@ if (isset($argc) && $argc > 1) {
 $error_logger = new ErrorLogger();
 
 // Access to Database and API
-$connector = new Connector();
+$connector = new Connector($new_token);
 
 // Determine which categories are out of sync with Open Trivia API
 $categories = new Categories($connector);

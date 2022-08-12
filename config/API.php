@@ -1,22 +1,18 @@
 <?php
 
+include_once realpath(__DIR__ ) . "/Token.php";
+
 Class API {
 
 	private $config;
 	private $req_url;
 	private $token;
 
-	public function __construct($config, $req_url, $token) {
+	public function __construct($config, $req_url, $new_token) {
 
 		$this->config = $config;
 		$this->req_url = $req_url;
-		$this->token = $token;
-	}
-
-	public function initialise() {
-
-		// $token needs $config and API to make api calls and update ini file
-		$this->token->initialise($this->config, $this);	
+		$this->token = new Token($this->config, $this, $new_token);
 	}	
 
 	/**
