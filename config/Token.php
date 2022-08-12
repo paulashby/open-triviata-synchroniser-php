@@ -20,14 +20,14 @@ Class Token {
 	/**
 	 * Retrieve a session token
 	 * 
-	 * @param boolean $expired: Do not read from config - get new from API
+	 * @param boolean $get_new: Do not read from config - get new from API
 	 * @return string - session cookie string
 	 */
-	public function sessionToken($expired = false) {
+	public function sessionToken($get_new = false) {
 
 		$session_token = $this->config->get('api_token', 'tokenconfig');
 
-		if($expired || (! $session_token) || ! strlen($session_token)) {
+		if($get_new || (! $session_token) || ! strlen($session_token)) {
 			$session_token = $this->newToken();
 		}
 
