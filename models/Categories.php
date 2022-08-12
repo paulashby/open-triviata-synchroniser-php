@@ -37,12 +37,11 @@ Class Categories {
 			$category_status = $category->status();
 
 			if ($category_status['completed']) {
-				error_log("Category {$category_id}: no new questions available");
+				// No new questions available
 				return $this->nextUnsynced($this->getCategory(++$category_id));
 			}
 
-			error_log("Category {$category_id}: new questions available. Processing...");
-			
+			// New questions available - return category for processing			
 			return $category;
 		}
 	}

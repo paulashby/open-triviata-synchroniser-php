@@ -39,7 +39,7 @@ while ($unsynced_category) {
 	$unsynced_category = $categories->nextUnsynced($syncing_category);
 }
 
-error_log("SUCCESS: all questions have been processed :)");
+error_log("SUCCESS: all questions have been processed.");
 die();
 
 

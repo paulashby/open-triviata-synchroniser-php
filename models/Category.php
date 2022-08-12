@@ -60,8 +60,6 @@ Class Category {
      */
     private function process($unsynced) {
 
-    	error_log("Updating category " . $this->id);
-
     	$unsynced_levels = $unsynced['levels'];
 
     	if (!$unsynced_levels) {
