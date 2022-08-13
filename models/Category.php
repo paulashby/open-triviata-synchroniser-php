@@ -22,7 +22,7 @@ Class Category {
 
         $this->status['completed'] = $questions_done == $source_questions;
         $this->status['next'] = $api_question_breakdown['category'];
-	}
+    }
 	
     /**
      * Get id
