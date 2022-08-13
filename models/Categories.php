@@ -1,5 +1,8 @@
 <?php
 
+include_once realpath(__DIR__ . "/../") . "/utilities/ErrorLogger.php";
+include_once realpath(__DIR__ . "/../") . "/utilities/DataCleaner.php";
+include_once realpath(__DIR__ . "/../") . "/config/Connector.php";
 include_once realpath(__DIR__) . "/Category.php";
 
 Class Categories {	
@@ -10,11 +13,31 @@ Class Categories {
 	private $database_question_count;
 	private $minimum_category_number;
 
-	public function __construct($connector) {
+	public function __construct($new_token) {
 
-		$this->connector = $connector;
+		// Log any error then die
+		$error_logger = new ErrorLogger();
+
+		// Access Database and API
+		$this->connector = new Connector($new_token);
+
 		$this->initApiCategories();
 		$this->initDatabaseCategories();
+	}
+
+	public function synchronise() {
+
+		// Start with the next incomplete category
+		$unsynced_category = $this->nextUnsynced();
+
+		while ($unsynced_category) {
+			
+			$syncing_category = $unsynced_category->synchronise();
+			$unsynced_category = $this->nextUnsynced($syncing_category);
+		}
+
+		error_log("SUCCESS: all questions have been processed.");
+		die();
 	}
 
 	/**
@@ -23,7 +46,7 @@ Class Categories {
 	 * @param int $category_id - the category in the local database to sync with remote api 
 	 * @return false or associative array with category id keys and arrays containing question counts for each difficulty level
 	 */
-	public function nextUnsynced($category_id = null) {
+	private function nextUnsynced($category_id = null) {
 
 		if(is_null($category_id)) {
 			$category_id = $this->minimum_category_number;

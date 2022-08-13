@@ -1,9 +1,5 @@
 <?php
 
-include_once realpath(__DIR__ . "/../") . "/config/Connector.php";
-include_once realpath(__DIR__ . "/../") . "/utilities/ErrorLogger.php";
-include_once realpath(__DIR__ . "/../") . "/utilities/DataCleaner.php";
-include_once realpath(__DIR__ . "/../") . "/interactions/ResponseProcessor.php";
 include_once realpath(__DIR__ . "/../") . "/models/Categories.php";
 
 $new_token = true;
@@ -20,25 +16,7 @@ if (isset($argc) && $argc > 1) {
 	}
 }
 
-// Log any error then die
-$error_logger = new ErrorLogger();
+$categories = new Categories($new_token);
 
-// Access to Database and API
-$connector = new Connector($new_token);
-
-// Determine which categories are out of sync with Open Trivia API
-$categories = new Categories($connector);
-
-// Start with the next incomplete category
-$unsynced_category = $categories->nextUnsynced();
-
-while ($unsynced_category) {
-	
-	$syncing_category = $unsynced_category->synchronise();
-	$unsynced_category = $categories->nextUnsynced($syncing_category);
-}
-
-error_log("SUCCESS: all questions have been processed.");
-die();
-
-
+// Synchronise categories with Open Trivia API
+$categories->synchronise();

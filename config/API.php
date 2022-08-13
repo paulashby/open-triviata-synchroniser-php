@@ -1,6 +1,7 @@
 <?php
 
 include_once realpath(__DIR__ ) . "/Token.php";
+include_once realpath(__DIR__ . "/../") . "/interactions/ResponseProcessor.php";
 
 Class API {
 
