@@ -4,24 +4,24 @@ include_once realpath(__DIR__ ) . "/Questions.php";
 
 Class Category {
 	
-	private $connector;
-	private $id;
-	private $database_question_count;
-	private $status;
+    private $connector;
+    private $id;
+    private $database_question_count;
+    private $status;
 
-	public function __construct($id, $api_question_breakdown, $connector) {
+    public function __construct($id, $api_question_breakdown, $connector) {
 
-		$this->connector = $connector;
-		$this->id = $id;
-		$this->initDatabase_question_count();
-		
-		// Is this category complete? Compare number of processed questions to the number available
-		$done_in_database = $this->database_question_count['category'];
-		$questions_done = $done_in_database['question_count'];
-		$source_questions = $api_question_breakdown['category']['total_question_count'];
+        $this->connector = $connector;
+        $this->id = $id;
+        $this->initDatabase_question_count();
+        
+        // Is this category complete? Compare number of processed questions to the number available
+        $done_in_database = $this->database_question_count['category'];
+        $questions_done = $done_in_database['question_count'];
+        $source_questions = $api_question_breakdown['category']['total_question_count'];
 
-		$this->status['completed'] = $questions_done == $source_questions;
-		$this->status['next'] = $api_question_breakdown['category'];
+        $this->status['completed'] = $questions_done == $source_questions;
+        $this->status['next'] = $api_question_breakdown['category'];
 	}
 	
     /**
