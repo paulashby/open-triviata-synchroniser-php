@@ -69,41 +69,41 @@ Class Categories {
 		}
 	}
 
-    /**
-     * Add a new category to the local database if given category does not exist
-     *
-     * @param int $category_id - the id number for the new category
-     * @return false or the id number for the new category
-     */
-    private function getCategory($category_id) {
+	/**
+	 * Add a new category to the local database if given category does not exist
+	 *
+	 * @param int $category_id - the id number for the new category
+	 * @return false or the id number for the new category
+	 */
+	private function getCategory($category_id) {
 
-    	if (!array_key_exists($category_id, $this->api_categories)) {
-    		// Category doesn't exist in api - we're done
-    		return false;
-    	}
+		if (!array_key_exists($category_id, $this->api_categories)) {
+			// Category doesn't exist in api - we're done
+			return false;
+		}
 
-    	$cat_name = $this->api_categories[$category_id];
-    	$category_exists = array_key_exists($category_id, $this->database_categories);
+		$cat_name = $this->api_categories[$category_id];
+		$category_exists = array_key_exists($category_id, $this->database_categories);
 
-    	if (!$category_exists) {
+		if (!$category_exists) {
 
-    		$db_query = array(
-    			array(
-    				'query' =>"INSERT INTO categories (id, category) VALUES (?, ?)", 
-    				'values' => array(
-    					$category_id, 
-    					$this->api_categories[$category_id]
-    				)
-    			)
-    		);
-    		$query_options = array(
-    			'insert'
-    		);
-    		$this->connector->database->query($db_query, $query_options);
-    	}
+			$db_query = array(
+				array(
+					'query' =>"INSERT INTO categories (id, category) VALUES (?, ?)", 
+					'values' => array(
+						$category_id, 
+						$this->api_categories[$category_id]
+					)
+				)
+			);
+			$query_options = array(
+				'insert'
+			);
+			$this->connector->database->query($db_query, $query_options);
+		}
 
-    	return $category_id;
-    }
+		return $category_id;
+	}
 
 	/**
 	 * Initialise $api_categories with category data from Open Trivia Database (category number/name pairs)
