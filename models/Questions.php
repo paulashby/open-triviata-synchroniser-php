@@ -99,14 +99,18 @@ Class Questions {
 
     		foreach ($questions as $question_details) {
 	    		// Prepare requests for all questions
+	    		$clean_type = DataCleaner::clean($question_details['type'], 'parameter', 'type');
+	    		$clean_difficulty = DataCleaner::clean($question_details['difficulty'], 'parameter', 'difficulty');
+	    		$decoded_question_details = $this->cleanAndDecode($question_details['question']);
+
     			$db_queries_questions = array(
     				array(
     					'query' => "INSERT INTO questions (category, type, difficulty, question_text) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE id=id;", 
     					'values' => array(
-    						$category_id, 
-    						DataCleaner::clean($question_details['type'], 'parameter', 'type'), 
-    						DataCleaner::clean($question_details['difficulty'], 'parameter', 'difficulty'),
-    						DataCleaner::clean($question_details['question'], 'string')
+    						$category_id,
+    						$clean_type,
+    						$clean_difficulty,
+    						$decoded_question_details
     					)
     				)
     			);
@@ -126,22 +130,24 @@ Class Questions {
     					);
     				} else {
     					foreach ($question_details['incorrect_answers'] as $incorrect_answer) {
-    						$incorrect_answer = DataCleaner::clean($incorrect_answer, gettype($incorrect_answer));
+    						$decoded_incorrect_answer = $this->cleanAndDecode($incorrect_answer);
+
     						$db_queries_answers[] = array(
     							'query' => "INSERT INTO answers (question_id, answer, correct) VALUES (?, ?, 0)", 
     							'values' => array(
     								$last_insert_id + 0, 
-    								$incorrect_answer
+    								$decoded_incorrect_answer
     							)
     						);
     					}
     					// Add correct answer
-    					$correct_answer = DataCleaner::clean($question_details['correct_answer'], 'string');
+    					$decoded_correct_answer = $this->cleanAndDecode($question_details['correct_answer']);
+
     					$db_queries_answers[] = array(    						
     						'query' => "INSERT INTO answers (question_id, answer, correct) VALUES (?, ?, 1)", 
     						'values' => array(
     							$last_insert_id + 0, 
-    							$correct_answer
+    							$decoded_correct_answer
     						)
     					);
     				}
@@ -161,6 +167,12 @@ Class Questions {
     		// No questions were provided - print a warning so it can be looked into if necessary
     		error_log("WARNING: No questions provided to process_questions() for category {$category_id}");
     	}
+    }
+
+    // Clean given string and decode all HTML entities
+    private function cleanAndDecode($str) {
+    	$clean_str = DataCleaner::clean($str, 'string');
+    	return html_entity_decode($clean_str, ENT_QUOTES | ENT_HTML5, 'UTF-8');
     }
 
     // Initalise array with question difficulty levels to sync
