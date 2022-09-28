@@ -3,15 +3,15 @@
 Class Questions {
 
 	public const MAX_QUESTIONS = 50;
-	private $connector;
+	private $connections;
 	private $category_id;
 	private $category_status;
-	private $unsynced; // Equivalent of to_do_list
+	private $unsynced;
 
 
-	public function __construct($id, $category, $connector) {
+	public function __construct($id, $category, $connections) {
 
-		$this->connector = $connector;
+		$this->connections = $connections;
 		$this->category_status = $category->status();
 		$this->category_id = $id;
 		$this->initUnsyncedList();
@@ -49,7 +49,7 @@ Class Questions {
     	$total = $unsynced['count'];
 
     	for ($i=$max_questions; $i <= $total; $i+=$max_questions) { 
-    		$this->connector->api->request($req_details);
+    		$this->connections['api']->request($req_details);
     	}
 
     	$remaining = $total % $max_questions;
@@ -57,7 +57,7 @@ Class Questions {
     	if ($remaining) {
    		// Add any stragglers
     		$req_details['parameters']['amount'] = $remaining;
-    		$this->connector->api->request($req_details);
+    		$this->connections['api']->request($req_details);
     	}
 
     }
@@ -92,7 +92,7 @@ Class Questions {
     			'questions'
     		);
 
-    		$this->connector->database->query($db_query, $query_options);
+    		$this->connections['database']->query($db_query, $query_options);
 
     		$db_queries_answers = array();
     		$previous_question_id = NULL;
@@ -116,7 +116,7 @@ Class Questions {
     			);
 
 		    	// Add question to database and set last inserted id
-    			$last_insert_id = (int)$this->connector->database->query($db_queries_questions, $query_options);
+    			$last_insert_id = (int)$this->connections['database']->query($db_queries_questions, $query_options);
 
     			if ($last_insert_id > 0 && (is_null($previous_question_id) || $previous_question_id != $last_insert_id)) {
 
@@ -161,7 +161,7 @@ Class Questions {
     				'insert'
     			);
 
-    			$this->connector->database->query($db_queries_answers, $query_options);	
+    			$this->connections['database']->query($db_queries_answers, $query_options);	
     		}
     	} else {
     		// No questions were provided - print a warning so it can be looked into if necessary
@@ -221,7 +221,7 @@ Class Questions {
 					)
 				)
 			);
-			$counts[$level] = $this->connector->database->query($db_query)[0];
+			$counts[$level] = $this->connections['database']->query($db_query)[0];
 		}
 		return $counts;
 	}

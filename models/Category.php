@@ -4,14 +4,14 @@ include_once realpath(__DIR__ ) . "/Questions.php";
 
 Class Category {
 	
-    private $connector;
+    private $connections;
     private $id;
     private $database_question_count;
     private $status;
 
-    public function __construct($id, $api_question_breakdown, $connector) {
+    public function __construct($id, $api_question_breakdown, $connections) {
 
-        $this->connector = $connector;
+        $this->connections = $connections;
         $this->id = $id;
         $this->initDatabase_question_count();
         
@@ -49,7 +49,7 @@ Class Category {
      */
     public function synchronise() {
     	
-    	$questions = new Questions($this->id, $this, $this->connector);
+    	$questions = new Questions($this->id, $this, $this->connections);
         $unsynced = $questions->unsynced(); // total question count and levels array eg ['easy': 100, ...]
         $unsynced_levels = $unsynced['levels'];
 
@@ -92,7 +92,7 @@ Class Category {
     		)
     	);
 
-    	$category_done = $this->connector->database->query($db_query)[0];
+    	$category_done = $this->connections['database']->query($db_query)[0];
     	$this->database_question_count['category'] = $category_done;
     }
 }

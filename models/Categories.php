@@ -1,8 +1,5 @@
 <?php
 
-include_once realpath(__DIR__ . "/../") . "/utilities/ErrorLogger.php";
-include_once realpath(__DIR__ . "/../") . "/utilities/DataCleaner.php";
-include_once realpath(__DIR__ . "/../") . "/config/Connector.php";
 include_once realpath(__DIR__) . "/Category.php";
 
 Class Categories {	
@@ -13,13 +10,10 @@ Class Categories {
 	private $database_question_count;
 	private $minimum_category_number;
 
-	public function __construct($new_token) {
-
-		// Log any error then die
-		$error_logger = new ErrorLogger();
+	public function __construct($connector) {
 
 		// Access Database and API
-		$this->connector = new Connector($new_token);
+		$this->connector = $connector;
 
 		$this->initApiCategories();
 		$this->initDatabaseCategories();
@@ -99,7 +93,7 @@ Class Categories {
 			$query_options = array(
 				'insert'
 			);
-			$this->connector->database->query($db_query, $query_options);
+			$this->connector['database']->query($db_query, $query_options);
 		}
 
 		return $category_id;
@@ -117,7 +111,7 @@ Class Categories {
 			'endpoint'	=> 'api_category.php'
 		);
 
-		$latest_categories = $this->connector->api->request($req_details, false);
+		$latest_categories = $this->connector['api']->request($req_details, false);
 
 		foreach ($latest_categories as $category) {			
 			// Populate api_categories with category number/name pairs
@@ -140,7 +134,7 @@ Class Categories {
 	private function initDatabaseCategories() {
 
 		$query = array("SELECT id FROM categories ORDER BY id ASC");
-		$database_categories = $this->connector->database->query($query);
+		$database_categories = $this->connector['database']->query($query);
 		$this->database_categories = array();
 
 		foreach ($database_categories as $category_data) {
@@ -185,7 +179,7 @@ Class Categories {
 		);
 
 		$questions = array(
-			'global' => $this->connector->api->request($req_details, false)
+			'global' => $this->connector['api']->request($req_details, false)
 		);
 
 		if(!$category_id) {
@@ -200,7 +194,7 @@ Class Categories {
 		);
 
 		// Return a single associative array with category number and question counts for each difficulty level
-		$breakdown = $this->connector->api->request($req_details, false);
+		$breakdown = $this->connector['api']->request($req_details, false);
 		$category_id = DataCleaner::clean($breakdown['category_id'], 'integer');
 		$category_question_count = DataCleaner::clean($breakdown['category_question_count'], 'difficultyLevelArray');
 		$category_question_count['id'] = $category_id;
