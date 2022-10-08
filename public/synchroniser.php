@@ -24,7 +24,7 @@ if (isset($argc) && $argc > 1) {
 	}
 }
 
-$ini_file = realpath(__DIR__ . "/../") . "/apiconfig.ini";
+$ini_file = realpath(__DIR__ . "/../") . "/appconfig.ini";
 
 // Instantiate ini for interactions with synchroniser config file
 $config = new INI($ini_file);
