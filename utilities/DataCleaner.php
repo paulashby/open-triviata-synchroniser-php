@@ -1,4 +1,6 @@
 <?php
+// https://www.php.net/manual/en/function.filter-var.php
+// https://www.php.net/manual/en/filter.filters.validate.php
 
 Class DataCleaner {
 
@@ -62,6 +64,7 @@ Class DataCleaner {
 		if ($clean !== false) {
 			return $clean;
 		}
+		// https://stackoverflow.com/questions/14114411/remove-all-special-characters-from-a-string
 		$str = preg_replace('/[^A-Za-z0-9. -]/', '', $str);
 		trigger_error("The following string was rejected (unsafe characters removed): $str\n", E_USER_ERROR);
 	}

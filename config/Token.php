@@ -2,13 +2,12 @@
 
 Class Token {
 
-	private $config;
+	private $token_file;
 	private $api;
 
-	public function __construct($config, $api, $new_token) {
+	public function __construct($api, $new_token) {
 
-		// $config allows us to update ini file
-		$this->config = $config;
+		$this->token_file = realpath(__DIR__ . "/../") . "/session_token.txt";
 
 		// $api for calls to Open Trivia api
 		$this->api = $api;
@@ -26,7 +25,7 @@ Class Token {
 	 */
 	public function sessionToken($new_token = false) {
 
-		$session_token = $this->config->get('api_token', 'tokenconfig');
+		$session_token = file($this->token_file)[0];
 
 		if($new_token || (! $session_token) || ! strlen($session_token)) {
 			$session_token = $this->newToken();
@@ -53,18 +52,18 @@ Class Token {
 	}
 
 	/**
-	 * Store new session token in config file
+	 * Store new session token in session_token file
 	 * 
 	 * @param string $token
-	 * @param array $req_details
 	 * @return string - session cookie string
 	 */
-	public function setToken($token, $req_details) {
+	public function setToken($token) {
 
 		if(!ctype_alnum($token)) {
-			trigger_error("Function argument 1 must be an alphanumeric string.", E_USER_ERROR);
+			trigger_error("First argument must be an alphanumeric string.", E_USER_ERROR);
 		}
-		$this->config->set($token, 'api_token', 'tokenconfig');
+		// Write token to session_token text file
+		file_put_contents($this->token_file, $token);
 		return $token;
 	}
 }

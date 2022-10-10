@@ -1,4 +1,6 @@
 <?php
+// Database connection setup
+// https://www.youtube.com/watch?v=OEWXbpUMODk
 
 Class Database {
 	
@@ -8,13 +10,7 @@ Class Database {
 	private $password;
 	private $conn;
 
-	public function __construct($config) {
-
-		$credentials = parse_ini_file($config);
-
-		if (!$credentials) {
-			$error_logger->log_then_die("Unable to access database credentials.");
-		}
+	public function __construct($credentials) {
 
 		$this->host = $credentials['host'];
 		$this->db_name = $credentials['db_name'];

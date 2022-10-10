@@ -1,6 +1,5 @@
 <?php
 
-include_once realpath(__DIR__ . "/../") . "/config/INI.php";
 include_once realpath(__DIR__ . "/../") . "/config/Database.php";
 include_once realpath(__DIR__ . "/../") . "/config/API.php";
 include_once realpath(__DIR__ . "/../") . "/utilities/DataCleaner.php";
@@ -24,15 +23,14 @@ if (isset($argc) && $argc > 1) {
 	}
 }
 
-$ini_file = realpath(__DIR__ . "/../") . "/appconfig.ini";
+// https://stackoverflow.com/questions/42700310/how-to-reference-to-a-folder-that-is-above-document-root-in-php
+$config = parse_ini_file(realpath(__DIR__ . "/../") . "/appconfig.ini");
 
-// Instantiate ini for interactions with synchroniser config file
-$config = new INI($ini_file);
 $connections = array(
 	// Connection to API - our data source
-	'api' 		=> new API($config, "https://opentdb.com/", $new_token),
-	// Connection to local database - where we'll store the data obtained from the api
-	'database' 	=> new Database($ini_file)
+	'api' 		=> new API("https://opentdb.com/", $new_token),
+	// Connection to triviata database - where we'll store the data obtained from the api
+	'database' 	=> new Database($config)
 );
 
 $categories = new Categories($connections);

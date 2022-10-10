@@ -5,15 +5,13 @@ include_once realpath(__DIR__ . "/../") . "/interactions/ResponseProcessor.php";
 
 Class API {
 
-	private $config;
 	private $req_url;
 	private $token;
 
-	public function __construct($config, $req_url, $new_token) {
+	public function __construct($req_url, $new_token) {
 
-		$this->config = $config;
 		$this->req_url = $req_url;
-		$this->token = new Token($this->config, $this, $new_token);
+		$this->token = new Token($this, $new_token);
 	}	
 
 	/**
@@ -53,6 +51,8 @@ Class API {
 		}
 		
 		$ch = curl_init();
+
+		// https://stackoverflow.com/questions/10524543/how-to-pass-custom-header-to-restful-call
 		$curl_options = array(
 			CURLOPT_FAILONERROR 	=> true,
 			CURLOPT_RETURNTRANSFER 	=> true,
@@ -64,6 +64,7 @@ Class API {
 		// Make the call
 		$response = curl_exec($ch);
 
+		// https://stackoverflow.com/questions/3987006/how-to-catch-curl-errors-in-php
 		if (curl_errno($ch)) {
 			$error_mssg = curl_error($ch);
 		}
