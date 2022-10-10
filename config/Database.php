@@ -33,7 +33,7 @@ Class Database {
 
 	/**
 	 * Execute the provided list of MySQL queries
-	 * @param array $db_queries - array of parameterised request arrays/SQL query strings
+	 * @param array $queries - array of parameterised request arrays/SQL query strings
 	 * @param array $options - has member 'insert' when running INSERT query,  'questions' when inserting questions
 	 *
 	 * @return ID of added row if questions parameter is true, else result of MySQL Query
