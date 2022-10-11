@@ -25,13 +25,13 @@ Class Token {
 	 */
 	public function sessionToken($new_token = false) {
 
-		$session_token = file($this->token_file)[0];
+		$session_token = file($this->token_file);
 
-		if($new_token || (! $session_token) || ! strlen($session_token)) {
+		if($new_token || (! $session_token) || ! count($session_token)) {
 			$session_token = $this->newToken();
 		}
 
-		return $session_token;
+		return $session_token[0];
 	}
 
 	/**
