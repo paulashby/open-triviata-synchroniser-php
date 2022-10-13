@@ -30,7 +30,7 @@ Class Categories {
 			$unsynced_category = $this->nextUnsynced($syncing_category);
 		}
 
-		error_log("SUCCESS: all questions have been processed.");
+		print("SUCCESS: all questions have been processed.");
 		die();
 	}
 
