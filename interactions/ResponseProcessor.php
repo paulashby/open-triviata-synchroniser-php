@@ -53,11 +53,7 @@ Class ResponseProcessor {
 				trigger_error("(Response code 2): Invalid parameter passed to Open Trivia API: $req_url.", E_USER_ERROR);
 
 				case 3:
-				// Token not found. Attempt to recover - duplicate questions will not trigger an SQL error as we're using ON DUPLICATE KEY UPDATE id=id.
-				// get new token to ensure api returns unique questions (going forward - they're only unique to the new token)
-				$token->sessionToken(true);
-				// Make the request again
-				return $api->request($req_details, True);
+				trigger_error("(Response code 3): Token not found. Run the app without the -t flag to use a new token. Request was $req_url", E_USER_ERROR);
 
 				case 4:
 				trigger_error("(Response code 4): All requested questions have been returned for the current token. Run the app without the -t flag to use a new token. Request was $req_url", E_USER_ERROR);
