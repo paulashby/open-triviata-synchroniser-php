@@ -8,7 +8,7 @@
 
 ## Table of Contents
 
-[Description](#description)<br />[Usage](#usage)<br />[Contributing](#contributing)<br />[Questions](#questions)<br />
+[Description](#description)<br />[Usage](#usage)<br />[Contributing](#contributing)<br />[License](#license)<br />[Questions](#questions)<br />
 
 ## Description
 PHP version of the programme [originally written in Python](https://github.com/paulashby/Open-Triviata-Synchroniser).</br>
