@@ -22,12 +22,14 @@ The refactored synchroniser programme is run by a weekly cron job and starts by 
 Once all categories have been checked, the programme is complete.
 
 ## Usage
-The synchroniser requires an appconfig.ini in the root directory with the following entries:<br />
-```[credentials]```<br />
-```host = "HOST_NAME"```<br />
-```db_name = "DATABASE_NAME"```<br />
-```username = "USER_NAME"```<br />
-```password = "PASSWORD"```<br />
+The synchroniser requires an appconfig.ini in the root directory with the following entries:
+```
+[credentials]
+host = "HOST_NAME"
+db_name = "DATABASE_NAME"
+username = "USER_NAME"
+password = "PASSWORD"
+```
 
 Get new token and synchronise all questions<br />
 ```synchroniser.php```<br /><br />
