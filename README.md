@@ -22,19 +22,22 @@ The refactored synchroniser programme is run by a weekly cron job and starts by 
 Once all categories have been checked, the programme is complete.
 
 ## Usage
-The synchroniser requires an appconfig.ini in the root directory with the following entries:
+The synchroniser requires a MySQL database with ``utf8mb4_unicode_520_ci`` collation and the tables detailed [here](https://github.com/paulashby/open-triviata-synchroniser-php/blob/main/database_tables.sql). You should include an appconfig.ini file in the root directory with the following entries:
 ```
-[credentials]
-host = "HOST_NAME"
-db_name = "DATABASE_NAME"
-username = "USER_NAME"
-password = "PASSWORD"
-```
+[dbconfig]
+host = HOST_NAME
+user = USER_NAME
+pass = PASSWORD
 
-Get new token and synchronise all questions<br />
-```synchroniser.php```<br /><br />
-Use existing token and synchronise any questions not yet received<br />
-```synchroniser.php -t```
+[tokenconfig]
+api_token = 
+```
+The api_token entry will be populated by the app.
+
+To run the programme with a new token (and synchronise all questions):<br />
+```php synchroniser.php```<br /><br />
+To run the programme with an existing token (and synchronise only new questions):<br />
+```php synchroniser.php -t```
 
 ## Contributing
 
